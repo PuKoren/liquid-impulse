@@ -1,0 +1,41 @@
+Code and Gameplay
+Christian Ngo   Jonathan Muller
+
+
+Music
+Danjyon Kimura
+
+
+Characters Art
+SNK (KoF 2003)
+
+
+Backgrounds Art
+CardCaptor Schuleter
+SEGA (Streets of Rage)
+
+
+Fonts Art
+Brian Kent
+
+
+Special Thanks
+G.M Spectre
+http://www.lesforges.org/
+https://github.com/pspdev/
+The GNU world
+
+
+Software Used
+SDL
+minini
+Subversion
+Visual Studio 2010
+Ankh SVN
+QtCreator
+Codeplex
+psptoolchain
+
+
+Thank you for playing
+http://liquidimpulse.codeplex.com/

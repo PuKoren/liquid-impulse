@@ -1,0 +1,38 @@
+TARGET = LIQUID_IMPULSE
+PSP_EBOOT_PIC1 = Resources_PSP/PICT0.png
+PSP_EBOOT_ICON = Resources_PSP/ICON0.png
+OBJS = main.o Application.o\
+		Tools/Surface.o \
+			Tools/Settings.o \
+			Tools/DrawString.o \
+			Tools/BackgroundManager.o \
+		Scenes/Survival.o \
+			Scenes/Level.o \
+		Maths/Vector2.o \
+			Maths/Rectangle.o \
+		Interfaces/Menu.o \
+		Entities/Effects/Projectile.o \
+			Entities/Effects/ParticleEngine.o \
+			Entities/Effects/Particle.o \
+			Entities/Effects/Effect.o \
+			Entities/Characters/Hero.o \
+			Entities/Characters/Enemy.o \
+		Libraries/MinIni/minIni.o
+
+CFLAGS = -O2 -G0 -Wall
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++0x
+ASFLAGS = $(CFLAGS)
+
+LIBDIR =
+LIBS = -lSDL -lSDL_mixer -lvorbisidec -logg -lSDL_ttf -lfreetype -lSDL_image -lpng -ljpeg -lz -lstdc++ 
+LDFLAGS = 
+
+EXTRA_TARGETS = EBOOT.PBP
+PSP_EBOOT_TITLE = LIQUID_IMPULSE
+
+PSPSDK= $(shell psp-config --pspsdk-path)
+PSPBIN = $(PSPSDK)/../bin
+PSPBIN = $(PSPSDK)/../bin
+CFLAGS += $(shell $(PSPBIN)/freetype-config --cflags) $(shell $(PSPBIN)/sdl-config --cflags)
+LIBS += $(shell $(PSPBIN)/freetype-config --libs) $(shell $(PSPBIN)/sdl-config --libs)
+include $(PSPSDK)/lib/build.mak

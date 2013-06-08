@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{29B6F337-68A8-44A1-9234-2972F43E7A2C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>LiquidImpulse</RootNamespace>
+    <ProjectName>LiquidImpulse</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDLmain.lib;SDL.lib;SDL_image.lib;SDL_ttf.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
+      <Version>0.1</Version>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL.lib;SDLmain.lib;SDL_ttf.lib;SDL_image.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Entities\Characters\Enemy.cpp" />
+    <ClCompile Include="Entities\Characters\Hero.cpp" />
+    <ClCompile Include="Entities\Effects\Effect.cpp" />
+    <ClCompile Include="Entities\Effects\Particle.cpp" />
+    <ClCompile Include="Entities\Effects\ParticleEngine.cpp" />
+    <ClCompile Include="Entities\Effects\Projectile.cpp" />
+    <ClCompile Include="Interfaces\Menu.cpp" />
+    <ClCompile Include="Libraries\MinIni\minIni.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Maths\Rectangle.cpp" />
+    <ClCompile Include="Maths\Vector2.cpp" />
+    <ClCompile Include="Scenes\Level.cpp" />
+    <ClCompile Include="Scenes\Survival.cpp" />
+    <ClCompile Include="Tools\BackgroundManager.cpp" />
+    <ClCompile Include="Tools\Colors.cpp" />
+    <ClCompile Include="Tools\DrawString.cpp" />
+    <ClCompile Include="Tools\Settings.cpp" />
+    <ClCompile Include="Tools\Surface.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Entities\Characters\Enemy.h" />
+    <ClInclude Include="Entities\Characters\Hero.h" />
+    <ClInclude Include="Entities\Effects\Effect.h" />
+    <ClInclude Include="Entities\Effects\Particle.h" />
+    <ClInclude Include="Entities\Effects\ParticleEngine.h" />
+    <ClInclude Include="Entities\Effects\Projectile.h" />
+    <ClInclude Include="Interfaces\Menu.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue-ccs.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue-efsl.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue-FatFs.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue-ffs.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue-mdd.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue-stdio.h" />
+    <ClInclude Include="Libraries\MinIni\minGlue.h" />
+    <ClInclude Include="Libraries\MinIni\minIni.h" />
+    <ClInclude Include="Libraries\MinIni\wxMinIni.h" />
+    <ClInclude Include="Maths\Rectangle.h" />
+    <ClInclude Include="Maths\Vector2.h" />
+    <ClInclude Include="Scenes\Level.h" />
+    <ClInclude Include="Scenes\Survival.h" />
+    <ClInclude Include="Tools\BackgroundManager.h" />
+    <ClInclude Include="Tools\Colors.h" />
+    <ClInclude Include="Tools\DrawString.h" />
+    <ClInclude Include="Tools\Settings.h" />
+    <ClInclude Include="Tools\Surface.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="credits.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="DLL\libfreetype-6.dll" />
+    <None Include="DLL\libgcc_s_dw2-1.dll" />
+    <None Include="DLL\libpng15-15.dll" />
+    <None Include="DLL\libstdc++-6.dll" />
+    <None Include="DLL\msvcp100d.dll" />
+    <None Include="DLL\msvcr100d.dll" />
+    <None Include="DLL\SDL.dll" />
+    <None Include="DLL\SDL_image.dll" />
+    <None Include="DLL\SDL_mixer.dll" />
+    <None Include="DLL\SDL_ttf.dll" />
+    <None Include="DLL\smpeg.dll" />
+    <None Include="DLL\zlib1.dll" />
+    <None Include="icon.bmp" />
+    <None Include="Libraries\MinIni\LICENSE" />
+    <None Include="Libraries\MinIni\NOTICE" />
+    <None Include="LICENSE" />
+    <None Include="Resources\Characters\Enemies\k\punch_left.png" />
+    <None Include="Resources\Characters\Enemies\k\punch_right.png" />
+    <None Include="Resources\Characters\Enemies\k\run_left.png" />
+    <None Include="Resources\Characters\Enemies\k\run_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\hard_hit_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\hard_hit_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\hit_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\hit_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\jump_down_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\jump_down_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\jump_up_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\jump_up_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\punch_air_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\punch_air_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\punch_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\punch_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\run_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\run_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\stand_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\stand_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_punch_air_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_punch_air_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_bomb_air_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_bomb_air_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_takedown_air_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_takedown_air_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_punch_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_punch_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_hit_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_hard_hit_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_hard_hit_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_hit_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_impulse_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_impulse_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_jump_down_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_jump_down_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_jump_up_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_jump_up_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_run_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_run_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_repulse_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_repulse_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_stand_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_stand_left.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_uppercut_right.png" />
+    <None Include="Resources\Characters\Hero\terry\hero_uppercut_left.png" />
+    <None Include="Resources\Characters\Hero\terry\LICENSE" />
+    <None Include="Resources\Effects\Attacks\air_bomb_attack_effect.png" />
+    <None Include="Resources\Effects\Attacks\impulse_attack_effect_right.png" />
+    <None Include="Resources\Effects\Attacks\impulse_attack_effect_left.png" />
+    <None Include="Resources\Effects\Attacks\repulse_attack_effect.png" />
+    <None Include="Resources\Effects\Environment\jump_dust.png" />
+    <None Include="Resources\Effects\Environment\hero_shadow.png" />
+    <None Include="Resources\Effects\Particles\blood.png" />
+    <None Include="Resources\Fonts\04B_30.ttf" />
+    <None Include="Resources\Fonts\redensek.ttf" />
+    <None Include="Resources\Fonts\slkscre.ttf" />
+    <None Include="Resources\Fonts\uni05_64.ttf" />
+    <None Include="Resources\Fonts\visitor.txt" />
+    <None Include="Resources\Fonts\visitor2.ttf" />
+    <None Include="Resources\Sounds\Effects\Hit.wav" />
+    <None Include="Resources\Sounds\Effects\Impulse.wav" />
+    <None Include="Resources\Sounds\Effects\Jump.wav" />
+    <None Include="Resources\Sounds\Effects\MenuChange.wav" />
+    <None Include="Resources\Sounds\Effects\MenuSelect.wav" />
+    <None Include="Resources\Sounds\Effects\Repulse.wav" />
+    <None Include="Resources\Sounds\Music\Danjyon_Kimura_Count_End.mp3" />
+    <None Include="Resources\Sounds\Music\Danjyon_Kimura_Main_Theme.mp3" />
+    <None Include="Resources\Sounds\Music\Danjyon_Kimura_Nazca.mp3" />
+    <None Include="Resources\Sounds\Music\Danjyon_Kimura_Teleporter.mp3" />
+    <None Include="Resources\Sounds\Music\LICENSE" />
+    <None Include="Resources\Textures\Backgrounds\LICENSE" />
+    <None Include="Resources\Textures\Backgrounds\menu.png" />
+    <None Include="Resources\Textures\Backgrounds\survival_0.png" />
+    <None Include="Resources\Textures\Backgrounds\town_0.png" />
+    <None Include="Resources\Textures\Backgrounds\town_1.png" />
+    <None Include="Resources\Textures\Backgrounds\town_2.png" />
+    <None Include="Resources\Textures\Backgrounds\town_3.png" />
+    <None Include="Resources\Textures\Backgrounds\town_4.png" />
+    <None Include="Resources\Textures\Backgrounds\town_5.png" />
+    <None Include="Resources\Textures\Backgrounds\town_6.png" />
+    <None Include="Resources\Textures\Backgrounds\town_7.png" />
+    <None Include="Resources\Textures\UI\arrow_right.png" />
+    <None Include="Resources\Textures\UI\hero_icon.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
