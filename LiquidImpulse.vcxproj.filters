@@ -152,5 +152,9 @@
     <None Include="Resources\Characters\Hero\terry\LICENSE" />
     <None Include="Resources\Effects\Attacks\impulse_attack_effect_right.png" />
     <None Include="Resources\Effects\Environment\hero_shadow.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\floor_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\fall_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\fall_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\floor_left.png" />
   </ItemGroup>
 </Project>

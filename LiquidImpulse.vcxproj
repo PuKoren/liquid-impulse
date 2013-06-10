@@ -154,6 +154,10 @@
     <None Include="Resources\Characters\Enemies\k\punch_right.png" />
     <None Include="Resources\Characters\Enemies\k\run_left.png" />
     <None Include="Resources\Characters\Enemies\k\run_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\fall_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\fall_right.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\floor_left.png" />
+    <None Include="Resources\Characters\Enemies\neg_terry\floor_right.png" />
     <None Include="Resources\Characters\Enemies\neg_terry\hard_hit_left.png" />
     <None Include="Resources\Characters\Enemies\neg_terry\hard_hit_right.png" />
     <None Include="Resources\Characters\Enemies\neg_terry\hit_left.png" />

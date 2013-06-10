@@ -21,6 +21,8 @@ enum ANIMATION_STATE{
 	ENEMY_PUNCH_AIR_LEFT,
 	ENEMY_HIT_LEFT,
 	ENEMY_HARD_HIT_LEFT,
+	ENEMY_FALL_LEFT,
+	ENEMY_FLOOR_LEFT,
 
 	ENEMY_RUN_RIGHT,
 	ENEMY_STAND_RIGHT,
@@ -30,6 +32,8 @@ enum ANIMATION_STATE{
 	ENEMY_PUNCH_AIR_RIGHT,
 	ENEMY_HIT_RIGHT,
 	ENEMY_HARD_HIT_RIGHT,
+	ENEMY_FALL_RIGHT,
+	ENEMY_FLOOR_RIGHT,
 
 	ENEMY_DIE_LEFT,
 	ENEMY_DIE_RIGHT
@@ -50,6 +54,8 @@ class Enemy{
 
 		bool jumping;
 		bool attacking;
+		bool falling;
+		bool onfloor;
 		int projected;
 		bool hit;
 		bool alive;

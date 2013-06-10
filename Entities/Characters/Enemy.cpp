@@ -40,7 +40,9 @@ void Enemy::Init(int _life, float _velocity, int _handicap){
 	this->jump_velocity_current = this->jump_velocity;
 	this->jumping = false;
 	this->attacking = false;
-	this->projected = false;
+	this->falling = false;
+	this->onfloor = false;
+	this->projected = 0;
 	this->gravity = 0.001f*RATIO;
 	this->animationState = ENEMY_STAND_RIGHT;
     this->lastProjectileId = 0;
@@ -56,7 +58,7 @@ void Enemy::Init(int _life, float _velocity, int _handicap){
 }
 
 Enemy::~Enemy(){
-	for(int i = 0; i <= ENEMY_HARD_HIT_RIGHT; i++){
+	for(int i = 0; i <= ENEMY_FLOOR_RIGHT; i++){
 		delete this->animationList[i];
 	}
 	delete[] this->animationList;
@@ -65,7 +67,7 @@ Enemy::~Enemy(){
 //load enemy content
 void Enemy::Load(std::string sprite_name){
 	//load all of the enemy sprites into a Surface array
-	this->animationList = new Surface*[ENEMY_HARD_HIT_RIGHT+1];
+	this->animationList = new Surface*[ENEMY_FLOOR_RIGHT+1];
 	this->animationList[ENEMY_RUN_LEFT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/run_left.png", 10, 75, Vector2(0,0), true);
 	this->animationList[ENEMY_RUN_RIGHT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/run_right.png", 10, 75, Vector2(0,0), false);
 	this->animationList[ENEMY_STAND_LEFT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/stand_left.png", 8, 75, Vector2(0,0), true);
@@ -81,11 +83,15 @@ void Enemy::Load(std::string sprite_name){
 	this->animationList[ENEMY_HIT_LEFT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/hit_left.png", 5, 75, Vector2(0,0), true);
 	this->animationList[ENEMY_HIT_RIGHT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/hit_right.png", 5, 75, Vector2(0,0), false);
 	this->animationList[ENEMY_HARD_HIT_LEFT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/hard_hit_left.png", 5, 75, Vector2(0,0), true);
-	this->animationList[ENEMY_HARD_HIT_RIGHT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/hard_hit_right.png", 5, 75, Vector2(0,0), false);
+	this->animationList[ENEMY_HARD_HIT_RIGHT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/hard_hit_right.png", 5, 75, Vector2(0,0), false);	
+	this->animationList[ENEMY_FALL_LEFT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/fall_left.png", 1, 100, Vector2(0,0), true);
+	this->animationList[ENEMY_FALL_RIGHT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/fall_right.png", 1, 100, Vector2(0,0), false);
+	this->animationList[ENEMY_FLOOR_LEFT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/floor_left.png", 1, 100, Vector2(0,0), true);
+	this->animationList[ENEMY_FLOOR_RIGHT] = new Surface("Resources/Characters/Enemies/"+sprite_name + "/floor_right.png", 1, 100, Vector2(0,0), false);
 }
 
 void Enemy::Load(Surface** anim_list){
-	this->animationList = new Surface*[ENEMY_HARD_HIT_RIGHT+1];
+	this->animationList = new Surface*[ENEMY_FLOOR_RIGHT+1];
 	this->animationList[ENEMY_RUN_LEFT] = new Surface(*anim_list[ENEMY_RUN_LEFT], 10, 75, true);
 	this->animationList[ENEMY_RUN_RIGHT] = new Surface(*anim_list[ENEMY_RUN_RIGHT], 10, 75, false);
 	this->animationList[ENEMY_STAND_LEFT] = new Surface(*anim_list[ENEMY_STAND_LEFT], 8, 75, true);
@@ -98,10 +104,14 @@ void Enemy::Load(Surface** anim_list){
 	this->animationList[ENEMY_JUMP_RIGHT_DOWN] = new Surface(*anim_list[ENEMY_JUMP_RIGHT_DOWN], 1, 100, false);
 	this->animationList[ENEMY_PUNCH_AIR_LEFT] = new Surface(*anim_list[ENEMY_PUNCH_AIR_LEFT], 7, 75, true);
 	this->animationList[ENEMY_PUNCH_AIR_RIGHT] = new Surface(*anim_list[ENEMY_PUNCH_AIR_RIGHT], 7, 75, false);
-	this->animationList[ENEMY_HIT_LEFT] = new Surface(*anim_list[ENEMY_HIT_LEFT], 5, 75, true);
-	this->animationList[ENEMY_HIT_RIGHT] = new Surface(*anim_list[ENEMY_HIT_RIGHT], 5, 75, false);
+	this->animationList[ENEMY_HIT_LEFT] = new Surface(*anim_list[ENEMY_HIT_LEFT], 5, 85, true);
+	this->animationList[ENEMY_HIT_RIGHT] = new Surface(*anim_list[ENEMY_HIT_RIGHT], 5, 85, false);
 	this->animationList[ENEMY_HARD_HIT_LEFT] = new Surface(*anim_list[ENEMY_HARD_HIT_LEFT], 5, 75, true);
 	this->animationList[ENEMY_HARD_HIT_RIGHT] = new Surface(*anim_list[ENEMY_HARD_HIT_RIGHT], 5, 75, false);
+	this->animationList[ENEMY_FALL_LEFT] = new Surface(*anim_list[ENEMY_FALL_LEFT], 1, 100, true);
+	this->animationList[ENEMY_FALL_RIGHT] = new Surface(*anim_list[ENEMY_FALL_RIGHT], 1, 100, false);
+	this->animationList[ENEMY_FLOOR_LEFT] = new Surface(*anim_list[ENEMY_FLOOR_LEFT], 1, 100, true);
+	this->animationList[ENEMY_FLOOR_RIGHT] = new Surface(*anim_list[ENEMY_FLOOR_RIGHT], 1, 100, false);
 
 }
 
@@ -148,8 +158,14 @@ void Enemy::RefreshAnimation(Hero &hero){
 		if(hero.GetPosition().X > this->position.X){
 			animationModifier = ENEMY_RUN_RIGHT;
 		}
+		
+		if(this->falling) {
+			this->ChangeAnimation((ANIMATION_STATE)(ENEMY_FALL_LEFT + animationModifier));
+		} else if (this->onfloor) {
+			this->ChangeAnimation((ANIMATION_STATE)(ENEMY_FLOOR_LEFT + animationModifier));
+		}
 		//if he is jumping
-		if(this->jumping && !this->hit){
+		else if(this->jumping && !this->hit && this->projected == 0){
 			//if he is attacking
 			if(this->attacking){
 				this->ChangeAnimation((ANIMATION_STATE)(ENEMY_PUNCH_AIR_LEFT + animationModifier));
@@ -188,10 +204,11 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 	} else if(this->projected == 2) {
 		if(!this->jumping && this->direction.Y < 0) {
 			this->jumping = true;
+			this->onfloor = false;
 			this->jump_position = this->position;
-			this->jump_velocity_current = this->jump_velocity * 1.2;
+			this->jump_velocity_current = this->jump_velocity * 1.7;
 		} else if (this->jumping && this->direction.Y > 0) {
-			this->jump_velocity_current = -this->jump_velocity * 1.2;
+			this->jump_velocity_current = -this->jump_velocity * 2;
 		} else if(!this->jumping && this->direction.Y > 0) {
 			this->projected = 0;
 			this->direction.Y = 0;
@@ -199,6 +216,7 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 	} else {
 		this->handicapTimer += gameTime;
 		if(this->handicapTimer >= this->handicap){
+			this->onfloor = false;
 			//now think robot, think !
 			//if we are attacking or hit, we dont use our brain
 			if(!this->attacking && !this->hit){
@@ -247,13 +265,20 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 			//we know he is no more jumping
 			this->jumping = false;
 			this->jump_velocity_current = this->jump_velocity;	
+			if(this->projected == 2) {
+				this->onfloor = true;
+			}
+			this->falling = false;
 			this->projected = 0;
 			this->direction.Y = 0;
 		} else {
 			//we decrease the jump speed by the current gravity
-			int modifierCoeff = (this->projected = 2) ? 1.2 : 1;
+			int modifierCoeff = (this->projected == 2) ? 2 : 1;
 			this->jump_velocity_current -= this->gravity * modifierCoeff * gameTime;
-		}
+			if(this->projected == 2 && this->jump_velocity_current < 0) {
+				this->falling = true;
+			}
+		}		
 	}else if(this->jumping && this->attacking){
 		this->jump_velocity_current = 0.0f;
 	}
