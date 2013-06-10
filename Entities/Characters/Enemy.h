@@ -46,9 +46,11 @@ class Enemy{
 		float jump_velocity_current;
 		float jump_velocity;
 		float gravity;
+		float projectedY;
 
 		bool jumping;
 		bool attacking;
+		int projected;
 		bool hit;
 		bool alive;
 		bool copyCreated;
@@ -81,6 +83,7 @@ class Enemy{
 		int GetLife();
 		float GetVelocity();
 		int GetHandicap();
+		float GetPositionZ();
 
 		bool Hit(Projectile*);
 		bool IsAlive();
@@ -89,6 +92,7 @@ class Enemy{
 		void Load(Surface**);
 		void Update(Uint32, Hero&, std::vector<Projectile*>&, std::vector<Projectile*>&);
 		void Draw(SDL_Surface*);
+		int Projected(Projectile*);
 
 		Surface** GetAnimationList();
 };

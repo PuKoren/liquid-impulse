@@ -185,6 +185,7 @@ void Hero::Update(Uint32 gameTime, std::vector<Projectile*>& heroProjectiles){
 			// We know he is no more jumping
 			this->jumping = false;
 			this->jump_velocity_current = this->jump_velocity;
+			Mix_PlayChannel(-1, this->jumpSound, false);
 		}
 		// We decrease the jump speed by the current gravity
 		this->jump_velocity_current -= this->gravity * gameTime;
@@ -229,7 +230,6 @@ void Hero::Update(Uint32 gameTime, std::vector<Projectile*>& heroProjectiles){
 
     // Refresh the animation status of the hero
 	this->RefreshAnimation();
-
     this->UpdateEffect(gameTime);
 }
 
@@ -343,6 +343,7 @@ void Hero::HandleJump(){
         this->jumping = true;
 		this->blockingAnimationModifier = false;
 		this->jumpDustEffect->StartEffect(this->position, Vector2(0,0));
+		Mix_PlayChannel(-1, this->jumpSound, false);
 	}
 }
 
@@ -357,6 +358,7 @@ void Hero::HandleAttack(){
 			this->attacking = true;
 			this->blockingAnimationModifier = true;
 			this->heroProjectiles->push_back(this->CreateProjectile());
+			Mix_PlayChannel(-1, this->hitSound, false);
 		}
     }
 }
@@ -365,11 +367,12 @@ void Hero::HandleAttack(){
 void Hero::HandleImpulseAttack(){
     if(this->HandleSpecialAttack(HERO_IMPULSE_LEFT)){
         if(this->lastMoveDirection == -1){
-            this->impulseEffectLeft->StartEffect(this->position, Vector2(-1,0));
+            this->impulseEffectLeft->StartEffect(this->position, Vector2(-1,0));			
         }else{
             this->impulseEffectRight->StartEffect(this->position, Vector2(1,0));
         }
         this->heroProjectiles->push_back(this->CreateProjectile(Vector2(1, 0), Vector2(0,0), 10, 0.6f, 1.0f, 4.0f, 300));
+		Mix_PlayChannel(-1, this->impulseSound, false);
     }
 }
 
@@ -379,19 +382,26 @@ void Hero::HandleAirBombAttack(){
         this->directionSpecial.Y = this->velocity * 10;
 		this->airBombEffect->StartEffect(this->jump_position, Vector2(0,0));
 		this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, 1), Vector2(-90, 0), 10, 0.8f, 6.0f, 1.0f, 100));
+		Mix_PlayChannel(-1, this->repulseSound, false);
     }
 }
 
 // Handle event for uppercut attack action
 void Hero::HandleUppercutAttack(){
-    this->HandleSpecialAttack(HERO_UPPERCUT_LEFT);
-    this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, -1), Vector2(20, 0), 3, 0.25f, 1.0f, 1.0f, 100));
+	if(this->HandleSpecialAttack(HERO_UPPERCUT_LEFT)){
+		this->HandleSpecialAttack(HERO_UPPERCUT_LEFT);
+		this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, -1), Vector2(20, 0), 5, 0.25f, 1.0f, 1.0f, 100));
+		Mix_PlayChannel(-1, this->hitSound, false);
+	}
 }
 
 // Handle event for air takedown attack action
 void Hero::HandleAirTakedownAttack(){
-    this->HandleSpecialAttack(HERO_TAKEDOWN_AIR_LEFT);
-    this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, 1), Vector2(20, 0), 10, 0.20f, 2.0f, 2.0f, 300));
+	if(this->HandleSpecialAttack(HERO_TAKEDOWN_AIR_LEFT)){
+		this->HandleSpecialAttack(HERO_TAKEDOWN_AIR_LEFT);
+		this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, 1), Vector2(20, 0), 10, 0.20f, 2.0f, 2.0f, 300));
+		Mix_PlayChannel(-1, this->impulseSound, false);
+	}
 }
 
 // Handle event for repulse attack action
@@ -402,6 +412,7 @@ void Hero::HandleRepulseAttack(){
         }else{
             this->repulseEffect->StartEffect(this->position, Vector2(0,0));
         }
+		Mix_PlayChannel(-1, this->repulseSound, false);
         this->heroProjectiles->push_back(this->CreateProjectile(Vector2(1, 0), Vector2(0,0), 10, 0.5f, 1.0f, 4.0f, 400));
         this->heroProjectiles->push_back(this->CreateProjectile(Vector2(-1, 0), Vector2(0,0), 10, 0.5f, 1.0f, 4.0f, 400));
     }
@@ -508,6 +519,7 @@ void Hero::Hit(Projectile* proj){
 		this->health = 100;
 	}
     this->hit = true;
+	Mix_PlayChannel(-1, this->hitSound, false);
 }
 
 // Return true if hero is alive

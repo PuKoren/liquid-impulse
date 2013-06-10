@@ -40,6 +40,7 @@ void Enemy::Init(int _life, float _velocity, int _handicap){
 	this->jump_velocity_current = this->jump_velocity;
 	this->jumping = false;
 	this->attacking = false;
+	this->projected = false;
 	this->gravity = 0.001f*RATIO;
 	this->animationState = ENEMY_STAND_RIGHT;
     this->lastProjectileId = 0;
@@ -134,6 +135,7 @@ bool Enemy::IsHeroFarAway(Hero& hero){
 
 void Enemy::RefreshAnimation(Hero &hero){
 	//update enemy animation
+
 	//if enemy is running to the right and not jumping
 	if(this->direction.X > 0 && !this->jumping && !this->attacking && !this->hit){
 		this->ChangeAnimation(ENEMY_RUN_RIGHT);
@@ -176,44 +178,64 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 	if(!this->alive)
 		return;
 
-	this->handicapTimer += gameTime;
-	if(this->handicapTimer >= this->handicap){
-		//now think robot, think !
-		//if we are attacking or hit, we dont use our brain
-		if(!this->attacking && !this->hit){
-			if(this->IsHeroFarAway(hero)){
-				//compute new direction for the robot
-				if(!this->jumping){
-					this->direction = (Vector2(hero.GetPosition().X + rand() % 100, (float)hero.GetPositionZ()) - this->position).Normalize();
+	if(this->projected == 1) {
+		this->position.X += gameTime * this->direction.X;
+		if(this->direction.X != 0) {
+			this->direction.X -= (this->direction.X > 0) ? 1 : -1;
+		} else {
+			this->projected = 0;
+		}
+	} else if(this->projected == 2) {
+		if(!this->jumping && this->direction.Y < 0) {
+			this->jumping = true;
+			this->jump_position = this->position;
+			this->jump_velocity_current = this->jump_velocity * 1.2;
+		} else if (this->jumping && this->direction.Y > 0) {
+			this->jump_velocity_current = -this->jump_velocity * 1.2;
+		} else if(!this->jumping && this->direction.Y > 0) {
+			this->projected = 0;
+			this->direction.Y = 0;
+		}
+	} else {
+		this->handicapTimer += gameTime;
+		if(this->handicapTimer >= this->handicap){
+			//now think robot, think !
+			//if we are attacking or hit, we dont use our brain
+			if(!this->attacking && !this->hit){
+				if(this->IsHeroFarAway(hero)){
+					//compute new direction for the robot
+					if(!this->jumping){
+						this->direction = (Vector2(hero.GetPosition().X + rand() % 100, (float)hero.GetPositionZ()) - this->position).Normalize();
+					}else{
+						this->direction = (Vector2(hero.GetPosition().X + rand() % 100, (float)hero.GetPositionZ()) - this->jump_position).Normalize();
+					}
 				}else{
-					this->direction = (Vector2(hero.GetPosition().X + rand() % 100, (float)hero.GetPositionZ()) - this->jump_position).Normalize();
-				}
-			}else{
-				//else we stay on place
-				this->direction = Vector2(0,0);
-				//if hero is jumping and not falling and we are on floor
-				if(hero.IsJumpingUp() && !this->jumping){
-					//then we jump to reach him !
-					this->jumping = true;
-					this->jump_position = this->position;
-				}else if(!(this->jumping && !hero.IsJumping())){
-					//if we are in air and the hero is not, we dont attack
-					//we attack him (but not if he is under us if in air)
-					if(this->jumping){
-						if(this->position.Y < hero.GetPosition().Y){
+					//else we stay on place
+					this->direction = Vector2(0,0);
+					//if hero is jumping and not falling and we are on floor
+					if(hero.IsJumpingUp() && !this->jumping){
+						//then we jump to reach him !
+						this->jumping = true;
+						this->jump_position = this->position;
+					}else if(!(this->jumping && !hero.IsJumping())){
+						//if we are in air and the hero is not, we dont attack
+						//we attack him (but not if he is under us if in air)
+						if(this->jumping){
+							if(this->position.Y < hero.GetPosition().Y){
+								this->attacking = true;
+							}
+						}else{
 							this->attacking = true;
 						}
-					}else{
-						this->attacking = true;
-					}
 
-					if(this->attacking){
-						enemiesProjectiles.push_back(this->CreateProjectile());
+						if(this->attacking){
+							enemiesProjectiles.push_back(this->CreateProjectile());
+						}
 					}
 				}
 			}
+			this->handicapTimer -= this->handicap;
 		}
-		this->handicapTimer -= this->handicap;
 	}
 
 	//if enemy is jumping
@@ -221,13 +243,17 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 		//move it by the current jump velocity
 		this->position.Y -= this->jump_velocity_current * gameTime;
 		//if enemy falled down to his original position
-		if(this->jump_position.Y < this->position.Y){
+		if(this->jump_position.Y <= this->position.Y){
 			//we know he is no more jumping
 			this->jumping = false;
-			this->jump_velocity_current = this->jump_velocity;
+			this->jump_velocity_current = this->jump_velocity;	
+			this->projected = 0;
+			this->direction.Y = 0;
+		} else {
+			//we decrease the jump speed by the current gravity
+			int modifierCoeff = (this->projected = 2) ? 1.2 : 1;
+			this->jump_velocity_current -= this->gravity * modifierCoeff * gameTime;
 		}
-		//we decrease the jump speed by the current gravity
-		this->jump_velocity_current -= this->gravity * gameTime;
 	}else if(this->jumping && this->attacking){
 		this->jump_velocity_current = 0.0f;
 	}
@@ -236,11 +262,12 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 	this->RefreshAnimation(hero);
 
 	//if the enemy is not attacking we allow move on X and Y axis
-	if(!this->attacking && !this->hit){
+	if(!this->attacking && !this->hit && this->projected == 0){
 		if(!this->jumping){
 			this->position.X += this->velocity * gameTime * this->direction.X;
 			this->position.Y += this->velocity * gameTime * this->direction.Y;
-		}else{
+		}
+		else{
 			this->position.X += this->velocity * gameTime * this->direction.X/2;
 			this->position.Y += this->velocity * gameTime * this->direction.Y/2;
 			this->jump_position.X += this->velocity * gameTime * this->direction.X/2;
@@ -259,7 +286,7 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 			this->handicapTimer = 0;
 			this->animationList[this->animationState]->ResetLoop();
 		}
-	}
+	}	
 }
 
 Projectile* Enemy::CreateProjectile(){
@@ -301,10 +328,23 @@ bool Enemy::Hit(Projectile* proj){
 		this->lastProjectileId = proj->GetId();
 		if(this->life <= 0){
 			this->alive = false;
+		} else {
+			this->projected = this->Projected(proj);
 		}
 		return true;
 	}
 	return false;
+}
+
+int Enemy::Projected(Projectile* proj) {
+	if(proj->GetPower() >= 5) {
+		float dirX = proj->GetDirection().X;
+		float dirY = proj->GetDirection().Y;
+
+		this->direction = (Vector2(10 * dirX, dirY));
+		return (dirX != 0) ? 1 : 2;
+	}
+	return 0;
 }
 
 bool Enemy::IsAlive(){
@@ -321,4 +361,13 @@ float Enemy::GetVelocity(){
 
 int Enemy::GetHandicap(){
 	return this->handicap;
+}
+
+// Return Z position of enemy
+float Enemy::GetPositionZ(){
+	if(!this->jumping){
+		return this->position.Y;
+	}else{
+        return this->jump_position.Y;
+	}
 }
