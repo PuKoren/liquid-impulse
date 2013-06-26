@@ -13,7 +13,7 @@
 #define RATIO 1.0f
 #endif
 
-#define DEBUG_COLLIDER true
+#define DEBUG_COLLIDER false
 
 enum GameState{
 	GAME_INIT,

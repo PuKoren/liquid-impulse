@@ -1,16 +1,17 @@
 #if PSP
 #include <pspkernel.h>
 #include <pspdebug.h>
+#include <pspfpu.h>
 #endif
 #include <iostream>
 #include "Application.h"
 
 
 #if PSP
-// De rappel de service de sortie
+
+// Rappel de service de sortie
 int exit_callback(int arg1, int arg2, void *common)
 {
-	running = false;
 	sceKernelExitGame();
 	return 0;
 }
@@ -46,8 +47,13 @@ int SetupCallbacks(void)
 extern "C"
 #endif
 int main(int argc, char** argv){
+    #if PSP
+    pspfpu_set_enable(0);
+    #endif
+
 	Application a;
 	a.Run();
+
 	#if PSP
     sceKernelExitGame();
     #endif

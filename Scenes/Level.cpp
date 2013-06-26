@@ -1,6 +1,7 @@
 #include "Level.h"
 #include "../Tools/DrawString.h"
 #include "../Tools/Colors.h"
+#include <iostream>
 
 Enemy * terr_neg;
 

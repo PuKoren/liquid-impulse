@@ -65,6 +65,7 @@ Surface::~Surface(){
 }
 
 void Surface::Load(std::string name){
+    printf("Loading surface %s.\n", name.c_str());
 	SDL_Surface * tmp;
 	if((tmp = IMG_Load(name.c_str())) == NULL){
 		this->surface = NULL;

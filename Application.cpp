@@ -142,12 +142,13 @@ bool  Application::Init(){
 	SDL_WM_SetCaption("Liquid Impulse", "SDL");
     //SDL_WM_SetIcon(SDL_LoadBMP("icon.png"), NULL);
 
+    #if !PSP
     if(SDL_NumJoysticks() > 0){
         printf("Using %s as joystick.\n", SDL_JoystickName(0));
         SDL_JoystickEventState(SDL_ENABLE);
         this->joystick = SDL_JoystickOpen(0);
     }
-
+    #endif
 	return true;
 }
 
@@ -354,122 +355,122 @@ void Application::PSPControls(SceCtrlData& pad, SDL_Event& Event, unsigned int& 
     if (pad.Buttons & PSP_CTRL_UP && !(previousPadStatus & PSP_CTRL_UP)){
         Event.type = SDL_KEYDOWN;
         Event.key.keysym.sym = SDLK_UP;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }else if(!(pad.Buttons & PSP_CTRL_UP) && previousPadStatus & PSP_CTRL_UP){
         Event.type = SDL_KEYUP;
         Event.key.keysym.sym = SDLK_UP;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }
     if (pad.Buttons & PSP_CTRL_DOWN && !(previousPadStatus & PSP_CTRL_DOWN)){
         Event.type = SDL_KEYDOWN;
         Event.key.keysym.sym = SDLK_DOWN;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }else if(!(pad.Buttons & PSP_CTRL_DOWN) && previousPadStatus & PSP_CTRL_DOWN){
         Event.type = SDL_KEYUP;
         Event.key.keysym.sym = SDLK_DOWN;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }
     if (pad.Buttons & PSP_CTRL_LEFT && !(previousPadStatus & PSP_CTRL_LEFT)){
         Event.type = SDL_KEYDOWN;
         Event.key.keysym.sym = SDLK_LEFT;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }else if(!(pad.Buttons & PSP_CTRL_LEFT) && previousPadStatus & PSP_CTRL_LEFT){
         Event.type = SDL_KEYUP;
         Event.key.keysym.sym = SDLK_LEFT;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }
     if (pad.Buttons & PSP_CTRL_RIGHT &&  !(previousPadStatus & PSP_CTRL_RIGHT)){
         Event.type = SDL_KEYDOWN;
         Event.key.keysym.sym = SDLK_RIGHT;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }else if(!(pad.Buttons & PSP_CTRL_RIGHT) && previousPadStatus & PSP_CTRL_RIGHT){
         Event.type = SDL_KEYUP;
         Event.key.keysym.sym = SDLK_RIGHT;
-        this->Event(&Event);
+        this->Event(&Event, false);
     }
 
     if(this->state == GAME_MENU || this->state == GAME_CREDITS || this->state == GAME_OPTIONS){
         if (pad.Buttons & PSP_CTRL_CROSS &&  !(previousPadStatus & PSP_CTRL_CROSS)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_RETURN;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_CROSS) && previousPadStatus & PSP_CTRL_CROSS){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_RETURN;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_CIRCLE &&  !(previousPadStatus & PSP_CTRL_CIRCLE)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_ESCAPE;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_CIRCLE) && previousPadStatus & PSP_CTRL_CIRCLE){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_ESCAPE;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
     }else if(this->state == GAME_INGAME){
         if (pad.Buttons & PSP_CTRL_CROSS &&  !(previousPadStatus & PSP_CTRL_CROSS)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_s;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_CROSS) && previousPadStatus & PSP_CTRL_CROSS){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_s;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_CIRCLE &&  !(previousPadStatus & PSP_CTRL_CIRCLE)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_d;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_CIRCLE) && previousPadStatus & PSP_CTRL_CIRCLE){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_d;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_TRIANGLE &&  !(previousPadStatus & PSP_CTRL_TRIANGLE)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_z;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_TRIANGLE) && previousPadStatus & PSP_CTRL_TRIANGLE){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_z;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_SQUARE &&  !(previousPadStatus & PSP_CTRL_SQUARE)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_q;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_SQUARE) && previousPadStatus & PSP_CTRL_SQUARE){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_q;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_LTRIGGER &&  !(previousPadStatus & PSP_CTRL_LTRIGGER)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_e;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_LTRIGGER) && previousPadStatus & PSP_CTRL_LTRIGGER){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_e;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_RTRIGGER &&  !(previousPadStatus & PSP_CTRL_RTRIGGER)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_e;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_RTRIGGER) && previousPadStatus & PSP_CTRL_RTRIGGER){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_e;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
         if (pad.Buttons & PSP_CTRL_START &&  !(previousPadStatus & PSP_CTRL_START)){
             Event.type = SDL_KEYDOWN;
             Event.key.keysym.sym = SDLK_ESCAPE;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_START) && previousPadStatus & PSP_CTRL_START){
             Event.type = SDL_KEYUP;
             Event.key.keysym.sym = SDLK_ESCAPE;
-            this->Event(&Event);
+            this->Event(&Event, false);
         }
     }
     previousPadStatus = pad.Buttons;

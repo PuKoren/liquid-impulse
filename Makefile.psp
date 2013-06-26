@@ -1,4 +1,7 @@
 TARGET = LIQUID_IMPULSE
+PSP_FW_VERSION=200
+EXTRA_TARGETS = EBOOT.PBP
+
 PSP_EBOOT_PIC1 = Resources_PSP/PICT0.png
 PSP_EBOOT_ICON = Resources_PSP/ICON0.png
 OBJS = main.o Application.o\
@@ -24,7 +27,7 @@ CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++0x
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =
-LIBS = -lSDL -lSDL_mixer -lvorbisidec -logg -lSDL_ttf -lfreetype -lSDL_image -lpng -ljpeg -lz -lstdc++ 
+LIBS = -lSDL -lSDL_mixer -lvorbisidec -logg -lSDL_ttf -lfreetype -lSDL_image -lpng -ljpeg -lz -lstdc++ -lpspfpu
 LDFLAGS = 
 
 EXTRA_TARGETS = EBOOT.PBP

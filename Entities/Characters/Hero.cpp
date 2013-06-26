@@ -76,7 +76,7 @@ void Hero::Init(int _health, int _life, float _velocity, Vector2 _limitTopLeftPo
 }
 
 // Load hero content
-void Hero::Load(std::string sprite_name){
+void Hero::Load(std::string sprite_name){    
 	// Load all of the hero sprites into a Surface array
 	this->heroAnimationList = new Surface*[HERO_BOMB_AIR_RIGHT+1];
 	this->heroAnimationList[HERO_RUN_LEFT] = new Surface("Resources/Characters/Hero/"+sprite_name + "/hero_run_left.png", 10, 50, Vector2(0,0), true);
@@ -380,7 +380,7 @@ void Hero::HandleImpulseAttack(){
 void Hero::HandleAirBombAttack(){
     if(this->HandleSpecialAttack(HERO_BOMB_AIR_LEFT)){
         this->directionSpecial.Y = this->velocity * 10;
-		this->airBombEffect->StartEffect(this->jump_position, Vector2(0,0));
+        this->airBombEffect->StartEffect(this->jump_position, Vector2(0,0));
 		this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, 1), Vector2(-90, 0), 10, 0.8f, 6.0f, 1.0f, 100));
 		Mix_PlayChannel(-1, this->repulseSound, false);
     }

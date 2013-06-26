@@ -17,7 +17,8 @@ SET (SRC_LIST main.cpp Application.cpp
                         Entities/Effects/Effect.cpp 
                         Entities/Characters/Hero.cpp 
                         Entities/Characters/Enemy.cpp 
-                Libraries/MinIni/minIni.c)
+                Libraries/MinIni/minIni.c
+                Config.h)
 
 # Initialize CXXFLAGS.
 set(CMAKE_CXX_FLAGS                "-Wall -std=c++11")

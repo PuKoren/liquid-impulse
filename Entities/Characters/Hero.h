@@ -102,7 +102,7 @@ class Hero {
         Effect * impulseEffectRight;
         Effect * impulseEffectLeft;
         Effect * repulseEffect;
-		Effect * airBombEffect;
+        Effect * airBombEffect;
 		Effect * jumpDustEffect;
 
     public:
