@@ -61,7 +61,13 @@ class Enemy{
         bool projected;
 		bool hit;
 		bool alive;
+        bool dying;
+        int dieCurrentTimer;
+        int dieTimer;
 		bool copyCreated;
+        bool blink;
+        int blinkTimer;
+        int blinkCurrentTimer;
 
 		Surface** animationList;
 		ANIMATION_STATE animationState;
@@ -95,6 +101,7 @@ class Enemy{
 
 		bool Hit(Projectile*);
 		bool IsAlive();
+        bool IsDying();
 
 		void Load(std::string);
 		void Load(Surface**);

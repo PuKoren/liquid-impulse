@@ -35,6 +35,7 @@ class Level{
 		int ScoreMultiplier;
 		bool freeMove;
 		bool firstRun;
+        bool paused;
 		float BackgroundForce;
 		float gravity;
 

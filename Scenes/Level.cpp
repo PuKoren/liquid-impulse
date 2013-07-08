@@ -12,6 +12,7 @@ Level::Level(){
 	this->HeroPosition = 200*RATIO;
 	this->BackgroundForce = 0.4f*RATIO;
 	this->freeMove = true;
+    this->paused = false;
 	this->hero->SetPositionX(this->HeroPosition);
 	this->arrow_right = new Surface("Resources/Textures/UI/arrow_right.png");
 	this->hero_icon = new Surface("Resources/Textures/UI/hero_icon.png");
@@ -73,7 +74,12 @@ void Level::Event(SDL_Event *e, GameState *gs){
 	if(e->key.keysym.sym == SDLK_ESCAPE){
 		*gs = GAME_LOAD_MENU;
 	}
-	this->hero->Event(e);
+    if(e->key.keysym.sym == SDLK_RETURN && e->type == SDL_KEYDOWN){
+        this->paused = !this->paused;
+    }
+    if(!this->paused){
+        this->hero->Event(e);
+    }
 }
 
 
@@ -84,6 +90,9 @@ bool arrow_blink_status = true;
 //smoother to move the background with a float value instead of int
 float backgroundStatus = 0;
 void Level::Update(Uint32 gameTime){
+    if(this->paused){
+        return;
+    }
 
 	if(firstRun){
 		gameTime = 0;
@@ -150,7 +159,6 @@ void Level::Update(Uint32 gameTime){
 }
 
 void Level::CollisionDetection(Uint32 gameTime){
-	
 	//enemy hits collision detection
 	int size = this->enemiesProjectiles.size();
 	Rectangle heroCollision = this->hero->GetCollisionBox();
@@ -164,7 +172,7 @@ void Level::CollisionDetection(Uint32 gameTime){
 			this->hero->Hit(this->enemiesProjectiles[i]);
             hit = true;
 		}
-		if(!this->enemiesProjectiles[i]->IsAlive()){
+        if(!this->enemiesProjectiles[i]->IsAlive()){
 			delete (Projectile *)this->enemiesProjectiles[i];
 			this->enemiesProjectiles[i] = NULL;
 			this->enemiesProjectiles.erase(this->enemiesProjectiles.begin()+i);
@@ -186,7 +194,9 @@ void Level::CollisionDetection(Uint32 gameTime){
 		for(int j = 0; j < enemySize; j++){
 			if(this->enemies[j]->GetCollisionBox().CollideWith(&projCollision)){
 				if(this->enemies[j]->Hit(this->heroProjectiles[i])){
-					this->SpreadBlood(this->enemies[j]->GetCollisionBox().Position, this->heroProjectiles[i]->GetDirection(), this->heroProjectiles[i]->GetPower());
+                    if(!this->enemies[j]->IsDying()){
+                        this->SpreadBlood(this->enemies[j]->GetCollisionBox().Position, this->heroProjectiles[i]->GetDirection(), this->heroProjectiles[i]->GetPower());
+                    }
 					this->heroProjectiles[i]->AddCollision();
 					if(!this->enemies[j]->IsAlive()){
 						delete (Enemy *)this->enemies[j];
@@ -218,8 +228,8 @@ void Level::SpreadBlood(Vector2 position, Vector2 direction, float power){
 }
 
 void Level::GenerateWave(){
-	for(int i = 0; i < this->wave * (this->difficulty*2); i++){
-		this->enemies.push_back(new Enemy(*terr_neg, this->difficulty*100, 0.1f, 750/this->difficulty));
+    for(int i = 0; i < this->wave * (this->difficulty*6); i++){
+        this->enemies.push_back(new Enemy(*terr_neg, this->difficulty*30, 0.1f, (rand()%700 + 300)/this->difficulty));
 	}
 	this->wave++;
 }

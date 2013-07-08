@@ -466,11 +466,11 @@ void Application::PSPControls(SceCtrlData& pad, SDL_Event& Event, unsigned int& 
         }
         if (pad.Buttons & PSP_CTRL_START &&  !(previousPadStatus & PSP_CTRL_START)){
             Event.type = SDL_KEYDOWN;
-            Event.key.keysym.sym = SDLK_ESCAPE;
+            Event.key.keysym.sym = SDLK_RETURN;
             this->Event(&Event, false);
         }else if(!(pad.Buttons & PSP_CTRL_START) && previousPadStatus & PSP_CTRL_START){
             Event.type = SDL_KEYUP;
-            Event.key.keysym.sym = SDLK_ESCAPE;
+            Event.key.keysym.sym = SDLK_RETURN;
             this->Event(&Event, false);
         }
     }

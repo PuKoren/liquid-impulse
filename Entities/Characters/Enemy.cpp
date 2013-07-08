@@ -42,8 +42,14 @@ void Enemy::Init(int _life, float _velocity, int _handicap){
 	this->attacking = false;
 	this->onfloor = false;
     this->stunned = false;
+    this->dying = false;
+    this->blink = false;
+    this->dieCurrentTimer = 0;
+    this->dieTimer = 1500;
     this->stunTimer = 1000;
     this->stunCurrentTimer = 0;
+    this->blinkTimer = 100;
+    this->blinkCurrentTimer = 0;
 	this->projected = 0;
 	this->gravity = 0.001f*RATIO;
 	this->animationState = ENEMY_STAND_RIGHT;
@@ -147,7 +153,7 @@ bool Enemy::IsHeroFarAway(Hero& hero){
 
 void Enemy::RefreshAnimation(Hero &hero){
 	//update enemy animation
-    if(this->stunned){
+    if(this->stunned || this->dying){
         return;
     }
 	//if enemy is running to the right and not jumping
@@ -207,6 +213,19 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
             this->stunCurrentTimer = 0;
         }
         return;
+    }else if(this->dying){
+        this->dieCurrentTimer += gameTime;
+        this->blinkCurrentTimer += gameTime;
+        if(this->blinkCurrentTimer >= this->blinkTimer){
+            this->blink = !this->blink;
+            this->blinkCurrentTimer -= this->blinkTimer;
+        }
+        if(this->dieCurrentTimer >= this->dieTimer){
+            this->dying = false;
+            this->alive = false;
+            this->dieCurrentTimer = 0;
+        }
+        return;
     }
 
     //if projected physics applies ! fun is here
@@ -230,13 +249,11 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
             this->position.X = RES_WIDTH - this->GetAnimationList()[this->animationState]->GetWidth();
             this->direction.X = -1.f;
             this->direction.Y = -1.f;
-            this->jump_position = this->GetPosition();
             this->jump_velocity_current = this->jump_velocity/2;
         }else if(this->position.X < 0){
             this->position.X = 0.f;
             this->direction.X = 1.f;
             this->direction.Y = -1.f;
-            this->jump_position = this->GetPosition();
             this->jump_velocity_current = this->jump_velocity/2;
         }
         if(this->position.Y < this->jump_position.Y){
@@ -325,7 +342,7 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 	this->RefreshAnimation(hero);
 
 	//if the enemy is not attacking we allow move on X and Y axis
-    if(!this->attacking && !this->hit && !this->projected){
+    if(!this->attacking && !this->hit && !this->projected && !this->stunned && !this->dying){
 		if(!this->jumping){
 			this->position.X += this->velocity * gameTime * this->direction.X;
 			this->position.Y += this->velocity * gameTime * this->direction.Y;
@@ -362,7 +379,9 @@ Projectile* Enemy::CreateProjectile(){
 
 void Enemy::Draw(SDL_Surface* viewport){
 	//draw the animation sprite
-	this->animationList[this->animationState]->DrawSprite(viewport, (int)this->position.X, (int)this->position.Y);
+    if(!this->blink){
+        this->animationList[this->animationState]->DrawSprite(viewport, (int)this->position.X, (int)this->position.Y);
+    }
 	if(DEBUG_COLLIDER){
 		this->GetCollisionBox().Draw(viewport, 255, 0, 0);
 	}
@@ -390,7 +409,7 @@ bool Enemy::Hit(Projectile* proj){
 		this->jump_velocity_current = this->jump_velocity/5;
 		this->lastProjectileId = proj->GetId();
 		if(this->life <= 0){
-			this->alive = false;
+            this->dying = true;
 		} else {
             if(proj->GetPower() >= 5) {
                 if(proj->GetDirection().Y <= 0.f){
@@ -399,6 +418,7 @@ bool Enemy::Hit(Projectile* proj){
                     }
                     this->jump_velocity_current = this->jump_velocity/2;
                     this->direction =  proj->GetDirection() * (proj->GetPower()/2);
+                    this->direction.Y = -1.f;
                 }
                 this->projected = true;
             }
@@ -409,7 +429,11 @@ bool Enemy::Hit(Projectile* proj){
 }
 
 bool Enemy::IsAlive(){
-	return this->alive;
+    return this->alive;
+}
+
+bool Enemy::IsDying(){
+    return this->dying;
 }
 
 int Enemy::GetLife(){
