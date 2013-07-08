@@ -69,3 +69,7 @@ Vector2 Vector2::operator*(Vector2 v){
 Vector2 Vector2::operator*(float f){
 	return Vector2(this->X * f, this->Y * f);
 }
+
+Vector2 Vector2::operator*(Uint32 f){
+    return Vector2(this->X * f, this->Y * f);
+}

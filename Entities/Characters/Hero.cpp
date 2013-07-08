@@ -41,8 +41,11 @@ void Hero::Init(int _health, int _life, float _velocity, Vector2 _limitTopLeftPo
     this->life = _life;
     this->limitTopLeftPoint = _limitTopLeftPoint;
     this->limitBottomRightPoint = _limitBottomRightPoint;
-
+    #if PSP
+    this->velocity = _velocity * 2;
+    #else
     this->velocity = _velocity;
+    #endif
     this->jump_velocity = 0.5f * RATIO;
     this->jump_velocity_current = this->jump_velocity;
     this->gravity = 0.001f * RATIO;
@@ -371,7 +374,7 @@ void Hero::HandleImpulseAttack(){
         }else{
             this->impulseEffectRight->StartEffect(this->position, Vector2(1,0));
         }
-        this->heroProjectiles->push_back(this->CreateProjectile(Vector2(1, 0), Vector2(0,0), 10, 0.6f, 1.0f, 4.0f, 300));
+        this->heroProjectiles->push_back(this->CreateProjectile(Vector2(1, 0), Vector2(0,0), 10, 0.6f, 1.0f, 6.0f, 300));
 		Mix_PlayChannel(-1, this->impulseSound, false);
     }
 }
@@ -390,7 +393,7 @@ void Hero::HandleAirBombAttack(){
 void Hero::HandleUppercutAttack(){
 	if(this->HandleSpecialAttack(HERO_UPPERCUT_LEFT)){
 		this->HandleSpecialAttack(HERO_UPPERCUT_LEFT);
-		this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, -1), Vector2(20, 0), 5, 0.25f, 1.0f, 1.0f, 100));
+        this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, -1), Vector2(0, 0), 5, 0.25f, 2.f, 1.0f, 100));
 		Mix_PlayChannel(-1, this->hitSound, false);
 	}
 }
@@ -399,7 +402,7 @@ void Hero::HandleUppercutAttack(){
 void Hero::HandleAirTakedownAttack(){
 	if(this->HandleSpecialAttack(HERO_TAKEDOWN_AIR_LEFT)){
 		this->HandleSpecialAttack(HERO_TAKEDOWN_AIR_LEFT);
-		this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, 1), Vector2(20, 0), 10, 0.20f, 2.0f, 2.0f, 300));
+        this->heroProjectiles->push_back(this->CreateProjectile(Vector2(0, 1), Vector2(20, 0), 10, 0.20f, 2.0f, 2.0f, 300));
 		Mix_PlayChannel(-1, this->impulseSound, false);
 	}
 }

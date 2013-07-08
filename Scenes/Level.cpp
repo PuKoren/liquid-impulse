@@ -115,7 +115,7 @@ void Level::Update(Uint32 gameTime){
 		}
 
 		//we replace the hero since we dont want it to move on screen
-		this->hero->SetPositionX(this->HeroPosition);
+        this->hero->SetPositionX(this->HeroPosition);
 
 		//if hero moved to the right for 1 second, we lock the screen
 		if(this->virtualX > 1000){

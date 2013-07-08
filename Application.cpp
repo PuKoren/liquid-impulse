@@ -336,6 +336,7 @@ void Application::Draw(SDL_Surface *viewport){
 			this->survival->Draw(viewport);
 			break;
 		default:
+            SDL_FillRect(this->Viewport, NULL, 0x0);
             SDL_Rect loadingRect; loadingRect.x = RES_WIDTH - 170; loadingRect.y = RES_HEIGHT - 50;
             SDL_BlitSurface(this->loadingSurface, NULL, viewport, &loadingRect);
 			break;

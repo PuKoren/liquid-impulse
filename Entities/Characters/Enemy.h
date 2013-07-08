@@ -54,9 +54,11 @@ class Enemy{
 
 		bool jumping;
 		bool attacking;
-		bool falling;
+        bool stunned;
+        int stunTimer;
+        int stunCurrentTimer;
 		bool onfloor;
-		int projected;
+        bool projected;
 		bool hit;
 		bool alive;
 		bool copyCreated;
