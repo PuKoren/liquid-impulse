@@ -10,7 +10,6 @@ DrawString::DrawString(){
 int listSize = 6;
 void DrawString::LoadFonts(){
 	if(fontList == NULL){
-        printf("Loading font Resources/Fonts/visitor2.ttf.\n");
 		fontList = new TTF_Font*[listSize];
 		fontList[FONT_TITLE] = TTF_OpenFont("Resources/Fonts/visitor2.ttf", 130*RATIO);
 		fontList[FONT_MENU] = TTF_OpenFont("Resources/Fonts/visitor2.ttf", 60*RATIO);

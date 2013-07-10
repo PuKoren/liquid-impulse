@@ -9,7 +9,6 @@ Settings::~Settings(){
 }
 
 void Settings::Load(){
-    printf("Loading settings options.ini\n");
 	minIni ini("options.ini");
 	#if PSP
 	this->full_screen = true;

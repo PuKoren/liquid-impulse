@@ -153,7 +153,7 @@ bool Enemy::IsHeroFarAway(Hero& hero){
 
 void Enemy::RefreshAnimation(Hero &hero){
 	//update enemy animation
-    if(this->stunned || this->dying){
+    if(this->stunned){
         return;
     }
 	//if enemy is running to the right and not jumping
@@ -170,7 +170,7 @@ void Enemy::RefreshAnimation(Hero &hero){
 		}
 		
         if(this->projected) {
-            if(this->position.Y > this->jump_position.Y || this->direction.Y == 0.f){
+            if(this->position.Y >= this->jump_position.Y || this->direction.Y == 0.f){
                 this->ChangeAnimation((ANIMATION_STATE)(ENEMY_FLOOR_LEFT + animationModifier));
             }else{
                 this->ChangeAnimation((ANIMATION_STATE)(ENEMY_FALL_LEFT + animationModifier));
@@ -213,16 +213,20 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
             this->stunCurrentTimer = 0;
         }
         return;
-    }else if(this->dying){
+    }
+
+    if(this->dying){
         this->dieCurrentTimer += gameTime;
         this->blinkCurrentTimer += gameTime;
         if(this->blinkCurrentTimer >= this->blinkTimer){
             this->blink = !this->blink;
             this->blinkCurrentTimer -= this->blinkTimer;
         }
+
         if(this->dieCurrentTimer >= this->dieTimer){
             this->dying = false;
             this->alive = false;
+            this->stunned = false;
             this->dieCurrentTimer = 0;
         }
         return;
@@ -256,6 +260,7 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
             this->direction.Y = -1.f;
             this->jump_velocity_current = this->jump_velocity/2;
         }
+
         if(this->position.Y < this->jump_position.Y){
             this->position.Y -= this->jump_velocity_current * gameTime;
             this->jump_velocity_current -= this->gravity * gameTime;
@@ -416,8 +421,8 @@ bool Enemy::Hit(Projectile* proj){
                     if(!this->projected && !this->jumping){
                         this->jump_position = this->GetPosition();
                     }
-                    this->jump_velocity_current = this->jump_velocity/2;
-                    this->direction =  proj->GetDirection() * (proj->GetPower()/2);
+                    this->jump_velocity_current = this->jump_velocity;
+                    this->direction =  proj->GetDirection() * (proj->GetPower()/2.f);
                     this->direction.Y = -1.f;
                 }
                 this->projected = true;

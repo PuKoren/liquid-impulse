@@ -145,6 +145,7 @@ void Level::Update(Uint32 gameTime){
 					this->enemies[i] = tmp;
 				}
 			}
+
 		}
 
 		//check if fight mode is over
@@ -198,14 +199,15 @@ void Level::CollisionDetection(Uint32 gameTime){
                         this->SpreadBlood(this->enemies[j]->GetCollisionBox().Position, this->heroProjectiles[i]->GetDirection(), this->heroProjectiles[i]->GetPower());
                     }
 					this->heroProjectiles[i]->AddCollision();
-					if(!this->enemies[j]->IsAlive()){
-						delete (Enemy *)this->enemies[j];
-						this->enemies.erase(this->enemies.begin()+j);
-						enemySize --;
-						j --;
-					}
 				}
 			}
+
+            if(!this->enemies[j]->IsAlive()){
+                delete (Enemy *)this->enemies[j];
+                this->enemies.erase(this->enemies.begin()+j);
+                enemySize --;
+                j --;
+            }
 		}
 
 		if(!this->heroProjectiles[i]->IsAlive()){
@@ -229,7 +231,7 @@ void Level::SpreadBlood(Vector2 position, Vector2 direction, float power){
 
 void Level::GenerateWave(){
     for(int i = 0; i < this->wave * (this->difficulty*6); i++){
-        this->enemies.push_back(new Enemy(*terr_neg, this->difficulty*30, 0.1f, (rand()%700 + 300)/this->difficulty));
+        this->enemies.push_back(new Enemy(*terr_neg, this->difficulty*30, ((rand()%3)+1)/10.f, ((rand()%700)+300)/this->difficulty));
 	}
 	this->wave++;
 }
