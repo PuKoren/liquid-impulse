@@ -6,6 +6,7 @@ PSP_EBOOT_PIC1 = Resources_PSP/PICT0.png
 PSP_EBOOT_ICON = Resources_PSP/ICON0.png
 OBJS = main.o Application.o\
 		Tools/Surface.o \
+			Tools/Colors.o \
 			Tools/Settings.o \
 			Tools/DrawString.o \
 			Tools/BackgroundManager.o \
@@ -14,6 +15,7 @@ OBJS = main.o Application.o\
 		Maths/Vector2.o \
 			Maths/Rectangle.o \
 		Interfaces/Menu.o \
+		Interfaces/GameOver.o \
 		Entities/Effects/Projectile.o \
 			Entities/Effects/ParticleEngine.o \
 			Entities/Effects/Particle.o \

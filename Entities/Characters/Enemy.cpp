@@ -234,7 +234,7 @@ void Enemy::Update(Uint32 gameTime, Hero &hero, std::vector<Projectile*>& heroPr
 
     //if projected physics applies ! fun is here
     if(this->projected) {
-        this->position = this->position + (this->direction * this->velocity) * gameTime;
+        this->position = this->position + (this->direction * (this->velocity/2)) * gameTime;
 
         bool stuckX = false;
         if(this->direction.X > 0.f){

@@ -10,6 +10,7 @@
 #endif
 #include "Config.h"
 #include "Interfaces/Menu.h"
+#include "Interfaces/GameOver.h"
 #include "Scenes/Level.h"
 #include "Scenes/Survival.h"
 #include "Tools/DrawString.h"
@@ -25,6 +26,7 @@ class Application{
         SDL_Surface* fpsSurface;
 		Menu *menu;
 		Level *level;
+        GameOver *gameover;
 		Survival *survival;
 		Settings *settings;
         SDL_Joystick* joystick;

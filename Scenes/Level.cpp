@@ -89,7 +89,7 @@ bool arrow_blink_status = true;
 
 //smoother to move the background with a float value instead of int
 float backgroundStatus = 0;
-void Level::Update(Uint32 gameTime){
+void Level::Update(Uint32 gameTime, GameState *gs){
     if(this->paused){
         return;
     }
@@ -150,11 +150,17 @@ void Level::Update(Uint32 gameTime){
 
 		//check if fight mode is over
 		if(this->enemies.size() == 0 && this->wave < this->maxWave){
+            if(this->wave == 10){
+                *gs = GAME_GAMEOVER;
+            }
 			this->freeMove = true;
 			this->virtualX = 0;
 			this->GenerateWave();
 		}
 	}
+    if(!this->hero->IsAlive()){
+        *gs = GAME_GAMEOVER;
+    }
 	this->CollisionDetection(gameTime);
 	this->bloodEngine.Update(gameTime);
 }
@@ -231,9 +237,13 @@ void Level::SpreadBlood(Vector2 position, Vector2 direction, float power){
 
 void Level::GenerateWave(){
     for(int i = 0; i < this->wave * (this->difficulty*6); i++){
-        this->enemies.push_back(new Enemy(*terr_neg, this->difficulty*30, ((rand()%3)+1)/10.f, ((rand()%700)+300)/this->difficulty));
+        this->enemies.push_back(new Enemy(*terr_neg, this->difficulty*30, ((rand()%2)+1)/10.f, ((rand()%700)+300)/this->difficulty));
 	}
 	this->wave++;
+}
+
+int Level::GetScore(){
+    return this->Score;
 }
 
 //return the number of 0 in one number

@@ -42,7 +42,7 @@ void Hero::Init(int _health, int _life, float _velocity, Vector2 _limitTopLeftPo
     this->limitTopLeftPoint = _limitTopLeftPoint;
     this->limitBottomRightPoint = _limitBottomRightPoint;
     #if PSP
-    this->velocity = _velocity * 1.25;
+    this->velocity = _velocity * 1.1;
     #else
     this->velocity = _velocity;
     #endif
@@ -520,6 +520,9 @@ void Hero::Hit(Projectile* proj){
 	if(this->health <= 0){
 		this->life--;
 		this->health = 100;
+        if(this->life < 0){
+            this->alive = false;
+        }
 	}
     this->hit = true;
 	Mix_PlayChannel(-1, this->hitSound, false);
@@ -527,7 +530,7 @@ void Hero::Hit(Projectile* proj){
 
 // Return true if hero is alive
 bool Hero::IsAlive(){
-	return this->alive;
+    return this->alive;
 }
 
 // Return true if hero is jumping

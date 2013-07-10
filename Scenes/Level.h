@@ -21,7 +21,8 @@ class Level{
 		~Level();
 		void Draw(SDL_Surface *);
 		void Event(SDL_Event *, GameState *);
-		void Update(Uint32);
+        void Update(Uint32, GameState*);
+        int GetScore();
 
 	private:
 		Hero *hero;

@@ -14,6 +14,7 @@ Application::Application(){
     this->loadingSurface = NULL;
     this->fpsSurface = NULL;
     this->joystick = NULL;
+    this->gameover = NULL;
 }
 
 
@@ -267,6 +268,9 @@ void Application::Event(SDL_Event *e, bool joystick){
 		case GAME_SURVIVAL:
 			this->survival->Event(e, &this->state);
 			break;
+        case GAME_GAMEOVER:
+            this->gameover->Event(e, &this->state);
+            break;
 		default:
 			if(e->key.keysym.sym == SDLK_ESCAPE){
 				this->Running = false;
@@ -287,7 +291,7 @@ void Application::Update(Uint32 gameTime){
 			this->menu->Update(gameTime);
 			break;
 		case GAME_INGAME:
-			this->level->Update(gameTime);
+            this->level->Update(gameTime, &this->state);
 			break;
 		case GAME_SURVIVAL:
 			this->survival->Update(gameTime);
@@ -318,6 +322,14 @@ void Application::Update(Uint32 gameTime){
 			this->level = new Level();
 			this->state = GAME_INGAME;
 			break;
+        case GAME_GAMEOVER:
+            if(this->level != NULL){
+                this->gameover = new GameOver(this->level->GetScore());
+                delete this->level;
+                this->level = NULL;
+            }
+            this->gameover->Update(gameTime);
+            break;
 		default:
 
 			break;
@@ -335,6 +347,11 @@ void Application::Draw(SDL_Surface *viewport){
 		case GAME_SURVIVAL:
 			this->survival->Draw(viewport);
 			break;
+        case GAME_GAMEOVER:
+            if(this->gameover != NULL){
+                this->gameover->Draw(viewport);
+            }
+            break;
 		default:
             SDL_FillRect(this->Viewport, NULL, 0x0);
             SDL_Rect loadingRect; loadingRect.x = RES_WIDTH - 170; loadingRect.y = RES_HEIGHT - 50;

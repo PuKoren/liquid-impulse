@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 aux_source_directory(. SRC_LIST)
 SET (SRC_LIST main.cpp Application.cpp
                 Tools/Surface.cpp 
+                        Tools/Colors.cpp
                         Tools/Settings.cpp 
                         Tools/DrawString.cpp 
                         Tools/BackgroundManager.cpp 
@@ -11,6 +12,7 @@ SET (SRC_LIST main.cpp Application.cpp
                 Maths/Vector2.cpp 
                         Maths/Rectangle.cpp 
                 Interfaces/Menu.cpp 
+                Interfaces/GameOver.cpp
                 Entities/Effects/Projectile.cpp 
                         Entities/Effects/ParticleEngine.cpp 
                         Entities/Effects/Particle.cpp 
