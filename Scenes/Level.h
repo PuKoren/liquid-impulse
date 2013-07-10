@@ -59,6 +59,7 @@ class Level{
         int survivalWaveTimer;
 		void Load();
 		void GenerateWave();
+        void UpdateEnemies(Uint32);
 		void SpreadBlood(Vector2, Vector2, float);
 		void CollisionDetection(Uint32);
 };

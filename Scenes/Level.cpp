@@ -100,20 +100,7 @@ int arrow_blink_timer = 0;
 int arrow_blink_speed = 300;
 bool arrow_blink_status = true;
 
-//smoother to move the background with a float value instead of int
-float backgroundStatus = 0;
-void Level::Update(Uint32 gameTime, GameState *gs){
-    if(this->paused){
-        return;
-    }
-
-	if(firstRun){
-		gameTime = 0;
-		firstRun = false;
-	}
-	//update hero logic
-    this->hero->Update(gameTime, this->heroProjectiles);
-    //update enemy logic and cleanup
+void Level::UpdateEnemies(Uint32 gameTime){
     int size = this->enemies.size();
     for(int i = 0; i < size; i++){
         this->enemies.at(i)->Update(gameTime, *this->hero, this->heroProjectiles, this->enemiesProjectiles);
@@ -131,6 +118,23 @@ void Level::Update(Uint32 gameTime, GameState *gs){
             i --;
         }
     }
+}
+
+//smoother to move the background with a float value instead of int
+float backgroundStatus = 0;
+void Level::Update(Uint32 gameTime, GameState *gs){
+    if(this->paused){
+        return;
+    }
+
+	if(firstRun){
+		gameTime = 0;
+		firstRun = false;
+	}
+	//update hero logic
+    this->hero->Update(gameTime, this->heroProjectiles);
+    //update enemy logic and cleanup
+
 
     if(this->survival){
         this->backgroundSurfaces->Move((int)(this->hero->GetPosition().X - this->HeroLastPosition));
@@ -138,6 +142,7 @@ void Level::Update(Uint32 gameTime, GameState *gs){
 
         this->HeroLastPositionZ = this->hero->GetPositionZ();
         this->HeroLastPosition = this->hero->GetPosition().X;
+        this->UpdateEnemies(gameTime);
     }else{
 
         //if scene is in "free move" state
@@ -180,6 +185,7 @@ void Level::Update(Uint32 gameTime, GameState *gs){
                 this->virtualX = 0;
                 this->GenerateWave();
             }
+            this->UpdateEnemies(gameTime);
             this->HeroPosition = this->hero->GetPosition().X;
         }
     }
