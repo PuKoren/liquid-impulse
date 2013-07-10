@@ -104,9 +104,9 @@ void Level::Update(Uint32 gameTime, GameState *gs){
 	if(this->freeMove){
 		//get the current direction of the hero and increment the virtual X of the scene
 		if(this->hero->GetMovingDirection() == 1){
-			this->virtualX += gameTime;
+            this->virtualX += gameTime;
 		}else if(this->hero->GetMovingDirection() == -1){
-			this->virtualX -= gameTime;
+            this->virtualX -= gameTime;
 		}
 
 		//smooth background movement
@@ -145,7 +145,12 @@ void Level::Update(Uint32 gameTime, GameState *gs){
 					this->enemies[i] = tmp;
 				}
 			}
-
+            if(!this->enemies[i]->IsAlive()){
+                delete (Enemy *)this->enemies[i];
+                this->enemies.erase(this->enemies.begin()+i);
+                size --;
+                i --;
+            }
 		}
 
 		//check if fight mode is over
@@ -157,6 +162,7 @@ void Level::Update(Uint32 gameTime, GameState *gs){
 			this->virtualX = 0;
 			this->GenerateWave();
 		}
+        this->HeroPosition = this->hero->GetPosition().X;
 	}
     if(!this->hero->IsAlive()){
         *gs = GAME_GAMEOVER;
@@ -207,13 +213,6 @@ void Level::CollisionDetection(Uint32 gameTime){
 					this->heroProjectiles[i]->AddCollision();
 				}
 			}
-
-            if(!this->enemies[j]->IsAlive()){
-                delete (Enemy *)this->enemies[j];
-                this->enemies.erase(this->enemies.begin()+j);
-                enemySize --;
-                j --;
-            }
 		}
 
 		if(!this->heroProjectiles[i]->IsAlive()){

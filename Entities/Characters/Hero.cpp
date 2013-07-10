@@ -42,7 +42,7 @@ void Hero::Init(int _health, int _life, float _velocity, Vector2 _limitTopLeftPo
     this->limitTopLeftPoint = _limitTopLeftPoint;
     this->limitBottomRightPoint = _limitBottomRightPoint;
     #if PSP
-    this->velocity = _velocity * 1.1;
+    this->velocity = _velocity * 1.2;
     #else
     this->velocity = _velocity;
     #endif
