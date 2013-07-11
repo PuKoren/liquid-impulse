@@ -163,8 +163,10 @@ void Application::JoyStickWrapper(SDL_Event* e){
         if(e->type == SDL_JOYBUTTONDOWN){
             switch(e->jbutton.button){
             case 0:
-                newEvent.key.keysym.sym = SDLK_RETURN;
-                this->Event(&newEvent, false);
+                if(this->state == GAME_MENU){
+                    newEvent.key.keysym.sym = SDLK_RETURN;
+                    this->Event(&newEvent, false);
+                }
                 newEvent.key.keysym.sym = SDLK_s;
                 break;
             case 2:
