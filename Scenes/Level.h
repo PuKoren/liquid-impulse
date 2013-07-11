@@ -17,7 +17,7 @@ using namespace std;
 
 class Level{
 	public:
-		Level();
+        Level(bool survival);
 		~Level();
 		void Draw(SDL_Surface *);
 		void Event(SDL_Event *, GameState *);
@@ -30,8 +30,11 @@ class Level{
 		std::vector<Projectile*> enemiesProjectiles;
 		std::vector<Projectile*> heroProjectiles;
 		ParticleEngine bloodEngine;
+        bool survival;
 
 		float HeroPosition;
+        float HeroLastPosition;
+        float HeroLastPositionZ;
 		int Score;
 		int ScoreMultiplier;
 		bool freeMove;
@@ -52,8 +55,11 @@ class Level{
 		int wave;
 		int maxWave;
 		int difficulty;
+        int survivalWaveCurrentTimer;
+        int survivalWaveTimer;
 		void Load();
 		void GenerateWave();
+        void UpdateEnemies(Uint32);
 		void SpreadBlood(Vector2, Vector2, float);
 		void CollisionDetection(Uint32);
 };

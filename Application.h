@@ -12,7 +12,6 @@
 #include "Interfaces/Menu.h"
 #include "Interfaces/GameOver.h"
 #include "Scenes/Level.h"
-#include "Scenes/Survival.h"
 #include "Tools/DrawString.h"
 #include "Tools/Settings.h"
 #include "Tools/Colors.h"
@@ -27,7 +26,7 @@ class Application{
 		Menu *menu;
 		Level *level;
         GameOver *gameover;
-		Survival *survival;
+        Level *survival;
 		Settings *settings;
         SDL_Joystick* joystick;
 

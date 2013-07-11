@@ -10,8 +10,7 @@ OBJS = main.o Application.o\
 			Tools/Settings.o \
 			Tools/DrawString.o \
 			Tools/BackgroundManager.o \
-		Scenes/Survival.o \
-			Scenes/Level.o \
+		Scenes/Level.o \
 		Maths/Vector2.o \
 			Maths/Rectangle.o \
 		Interfaces/Menu.o \

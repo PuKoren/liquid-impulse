@@ -5,8 +5,13 @@
 
 Enemy * terr_neg;
 
-Level::Level(){
-	this->backgroundSurfaces = new BackgroundManager("town", 8);
+Level::Level(bool survival = false){
+    this->survival = survival;
+    if(this->survival){
+        this->backgroundSurfaces = new BackgroundManager("survival", 1);
+    }else{
+        this->backgroundSurfaces = new BackgroundManager("town", 8);
+    }
     this->hero = new Hero(&this->heroProjectiles);
 	this->Load();
 	this->HeroPosition = 200*RATIO;
@@ -14,6 +19,8 @@ Level::Level(){
 	this->freeMove = true;
     this->paused = false;
 	this->hero->SetPositionX(this->HeroPosition);
+    this->HeroLastPosition = this->HeroPosition;
+    this->HeroLastPositionZ = this->hero->GetPositionZ();
 	this->arrow_right = new Surface("Resources/Textures/UI/arrow_right.png");
 	this->hero_icon = new Surface("Resources/Textures/UI/hero_icon.png");
     this->arrow_text = DrawString::GetSurface("Go!", FONT_INGAME_UI, WHITE);
@@ -26,6 +33,8 @@ Level::Level(){
 	this->gravity = 0.003f*RATIO;
 	this->maxWave = 20;
 	this->difficulty = 1;
+    this->survivalWaveCurrentTimer = 0;
+    this->survivalWaveTimer = 10000;
 	this->bloodEngine = ParticleEngine("blood", this->gravity);
 
 	terr_neg = new Enemy("neg_terry", 100, 0.1f, 100);
@@ -66,7 +75,11 @@ Level::~Level(){
 }
 
 void Level::Load(){
-	this->backgroundMusic = Mix_LoadMUS("Resources/Sounds/Music/Danjyon_Kimura_Count_End.ogg");
+    if(this->survival){
+        this->backgroundMusic = Mix_LoadMUS("Resources/Sounds/Music/Danjyon_Kimura_Nazca.ogg");
+    }else{
+        this->backgroundMusic = Mix_LoadMUS("Resources/Sounds/Music/Danjyon_Kimura_Count_End.ogg");
+    }
 	Mix_PlayMusic(this->backgroundMusic,-1);
 }
 
@@ -87,6 +100,26 @@ int arrow_blink_timer = 0;
 int arrow_blink_speed = 300;
 bool arrow_blink_status = true;
 
+void Level::UpdateEnemies(Uint32 gameTime){
+    int size = this->enemies.size();
+    for(int i = 0; i < size; i++){
+        this->enemies.at(i)->Update(gameTime, *this->hero, this->heroProjectiles, this->enemiesProjectiles);
+        if(i > 0){
+            if(this->enemies[i-1]->GetPosition().Y > this->enemies[i]->GetPosition().Y){
+                Enemy *tmp = this->enemies[i-1];
+                this->enemies[i-1] = this->enemies[i];
+                this->enemies[i] = tmp;
+            }
+        }
+        if(!this->enemies[i]->IsAlive()){
+            delete (Enemy *)this->enemies[i];
+            this->enemies.erase(this->enemies.begin()+i);
+            size --;
+            i --;
+        }
+    }
+}
+
 //smoother to move the background with a float value instead of int
 float backgroundStatus = 0;
 void Level::Update(Uint32 gameTime, GameState *gs){
@@ -100,73 +133,75 @@ void Level::Update(Uint32 gameTime, GameState *gs){
 	}
 	//update hero logic
     this->hero->Update(gameTime, this->heroProjectiles);
-	//if scene is in "free move" state
-	if(this->freeMove){
-		//get the current direction of the hero and increment the virtual X of the scene
-		if(this->hero->GetMovingDirection() == 1){
-            this->virtualX += gameTime;
-		}else if(this->hero->GetMovingDirection() == -1){
-            this->virtualX -= gameTime;
-		}
+    //update enemy logic and cleanup
 
-		//smooth background movement
-		backgroundStatus += this->BackgroundForce * gameTime * RATIO;
-		this->backgroundSurfaces->Move((int)backgroundStatus * this->hero->GetMovingDirection());
-		if(backgroundStatus >= 1){
-			backgroundStatus = 0;
-		}
 
-		//arrow blink timer, make it blink !
-		arrow_blink_timer += gameTime;
-		if(arrow_blink_timer > arrow_blink_speed){
-			arrow_blink_status = !arrow_blink_status;
-			arrow_blink_timer -= arrow_blink_speed;
-		}
+    if(this->survival){
+        this->backgroundSurfaces->Move((int)(this->hero->GetPosition().X - this->HeroLastPosition));
+        this->backgroundSurfaces->MoveY((int)(this->hero->GetPositionZ() - this->HeroLastPositionZ));
 
-		//we replace the hero since we dont want it to move on screen
-        this->hero->SetPositionX(this->HeroPosition);
+        this->HeroLastPositionZ = this->hero->GetPositionZ();
+        this->HeroLastPosition = this->hero->GetPosition().X;
+        this->UpdateEnemies(gameTime);
+    }else{
 
-		//if hero moved to the right for 1 second, we lock the screen
-		if(this->virtualX > 1000){
-			this->freeMove = false;
-		}
-	}else{
-		//scene is in fight mode !
-		//enemy logic
-		//new way to manage depth, using the main loop
-		//exact order is not realy need at every frame so we admit a bit of errors for better perfs
-		int size = this->enemies.size();
-		for(int i = 0; i < size; i++){
-			this->enemies.at(i)->Update(gameTime, *this->hero, this->heroProjectiles, this->enemiesProjectiles);
-			if(i > 0){
-				if(this->enemies[i-1]->GetPosition().Y > this->enemies[i]->GetPosition().Y){
-					Enemy *tmp = this->enemies[i-1];
-					this->enemies[i-1] = this->enemies[i];
-					this->enemies[i] = tmp;
-				}
-			}
-            if(!this->enemies[i]->IsAlive()){
-                delete (Enemy *)this->enemies[i];
-                this->enemies.erase(this->enemies.begin()+i);
-                size --;
-                i --;
+        //if scene is in "free move" state
+        if(this->freeMove){
+            //get the current direction of the hero and increment the virtual X of the scene
+            if(this->hero->GetMovingDirection() == 1){
+                this->virtualX += gameTime;
+            }else if(this->hero->GetMovingDirection() == -1){
+                this->virtualX -= gameTime;
             }
-		}
 
-		//check if fight mode is over
-		if(this->enemies.size() == 0 && this->wave < this->maxWave){
-            if(this->wave == 10){
-                *gs = GAME_GAMEOVER;
+            //smooth background movement
+            backgroundStatus += this->BackgroundForce * gameTime * RATIO;
+            this->backgroundSurfaces->Move((int)backgroundStatus * this->hero->GetMovingDirection());
+            if(backgroundStatus >= 1){
+                backgroundStatus = 0;
             }
-			this->freeMove = true;
-			this->virtualX = 0;
-			this->GenerateWave();
-		}
-        this->HeroPosition = this->hero->GetPosition().X;
-	}
+
+            //arrow blink timer, make it blink !
+            arrow_blink_timer += gameTime;
+            if(arrow_blink_timer > arrow_blink_speed){
+                arrow_blink_status = !arrow_blink_status;
+                arrow_blink_timer -= arrow_blink_speed;
+            }
+
+            //we replace the hero since we dont want it to move on screen
+            this->hero->SetPositionX(this->HeroPosition);
+
+            //if hero moved to the right for 1 second, we lock the screen
+            if(this->virtualX > 1000){
+                this->freeMove = false;
+            }
+        }else{
+            //check if fight mode is over
+            if(this->enemies.size() == 0 && this->wave < this->maxWave){
+                if(this->wave == 10){
+                    *gs = GAME_GAMEOVER;
+                }
+                this->freeMove = true;
+                this->virtualX = 0;
+                this->GenerateWave();
+            }
+            this->UpdateEnemies(gameTime);
+            this->HeroPosition = this->hero->GetPosition().X;
+        }
+    }
+
+    if(this->survival){
+        this->survivalWaveCurrentTimer += gameTime;
+        if(this->survivalWaveCurrentTimer >= this->survivalWaveTimer){
+            this->GenerateWave();
+            this->survivalWaveCurrentTimer -= this->survivalWaveTimer;
+        }
+    }
+
     if(!this->hero->IsAlive()){
         *gs = GAME_GAMEOVER;
     }
+
 	this->CollisionDetection(gameTime);
 	this->bloodEngine.Update(gameTime);
 }
@@ -268,7 +303,7 @@ void Level::Draw(SDL_Surface * viewport){
 	this->backgroundSurfaces->Draw(viewport);
 	this->bloodEngine.Draw(viewport);
 
-	if(this->freeMove){
+    if(this->freeMove && !this->survival){
 		this->hero->Draw(viewport);
 	}else{
 		//do a depth buffer to draw properly enemies and hero
@@ -298,11 +333,10 @@ void Level::Draw(SDL_Surface * viewport){
 	}
 
 	//arrow "go to next screen" blinking
-	if(this->freeMove && arrow_blink_status){
+    if(this->freeMove && arrow_blink_status && !this->survival){
 		this->arrow_right->Draw(viewport, RES_WIDTH - (this->arrow_right->GetWidth() + 10), RES_HEIGHT/2 - this->arrow_right->GetHeight()/2);
         SDL_Rect goRect; goRect.x = RES_WIDTH - (this->arrow_right->GetWidth()/2); goRect.y = RES_HEIGHT/2-this->arrow_right->GetHeight();
         SDL_BlitSurface(this->arrow_text, NULL, viewport, &goRect);
-		//DrawString::Draw(viewport, "Go!", FONT_INGAME_UI, WHITE, RES_WIDTH - (this->arrow_right->GetWidth()/2), RES_HEIGHT/2-this->arrow_right->GetHeight());
 	}
 
 	//hero health bar

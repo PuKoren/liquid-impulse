@@ -7,8 +7,7 @@ SET (SRC_LIST main.cpp Application.cpp
                         Tools/Settings.cpp 
                         Tools/DrawString.cpp 
                         Tools/BackgroundManager.cpp 
-                Scenes/Survival.cpp 
-                        Scenes/Level.cpp 
+                Scenes/Level.cpp
                 Maths/Vector2.cpp 
                         Maths/Rectangle.cpp 
                 Interfaces/Menu.cpp 

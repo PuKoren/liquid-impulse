@@ -296,13 +296,13 @@ void Application::Update(Uint32 gameTime){
             this->level->Update(gameTime, &this->state);
 			break;
 		case GAME_SURVIVAL:
-			this->survival->Update(gameTime);
+            this->survival->Update(gameTime, &this->state);
 			break;
 		case GAME_LOAD_SURVIVAL:
             SDL_FillRect(this->Viewport, NULL, 0x0);
 			delete this->menu;
 			this->menu = NULL;
-			this->survival = new Survival();
+            this->survival = new Level(true);
 			this->state = GAME_SURVIVAL;
 			break;
 		case GAME_LOAD_MENU:
@@ -321,14 +321,20 @@ void Application::Update(Uint32 gameTime){
             SDL_FillRect(this->Viewport, NULL, 0x0);
 			delete this->menu;
 			this->menu = NULL;
-			this->level = new Level();
+            this->level = new Level(false);
 			this->state = GAME_INGAME;
 			break;
         case GAME_GAMEOVER:
-            if(this->level != NULL){
-                this->gameover = new GameOver(this->level->GetScore());
-                delete this->level;
-                this->level = NULL;
+            if(this->level != NULL || this->survival != NULL){
+                if(this->level != NULL){
+                    this->gameover = new GameOver(this->level->GetScore());
+                    delete this->level;
+                    this->level = NULL;
+                }else{
+                    this->gameover = new GameOver(this->survival->GetScore());
+                    delete this->survival;
+                    this->survival = NULL;
+                }
             }
             this->gameover->Update(gameTime);
             break;

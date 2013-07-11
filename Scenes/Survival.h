@@ -12,27 +12,27 @@
 using namespace std;
 
 class Survival{
-	public:
-		Survival();
-		~Survival();
-		void Draw(SDL_Surface *);
-		void Event(SDL_Event *, GameState *);
-		void Update(Uint32);
+    public:
+        Survival();
+        ~Survival();
+        void Draw(SDL_Surface *);
+        void Event(SDL_Event *, GameState *);
+        void Update(Uint32);
 
-	private:
-		Hero *hero;
-		float HeroPosition;
-		float HeroLastPosition;
-		float HeroLastPositionZ;
-		bool freeMove;
-		float BackgroundForce;
-		Mix_Music *backgroundMusic;
-		BackgroundManager *backgroundSurfaces;
-		Surface* arrow_right;
-		Surface* hero_icon;
-		int virtualX;
-		void Load();
-		std::vector<Projectile*> heroProjectiles;
+    private:
+        Hero *hero;
+        float HeroPosition;
+        float HeroLastPosition;
+        float HeroLastPositionZ;
+        bool freeMove;
+        float BackgroundForce;
+        Mix_Music *backgroundMusic;
+        BackgroundManager *backgroundSurfaces;
+        Surface* arrow_right;
+        Surface* hero_icon;
+        int virtualX;
+        void Load();
+        std::vector<Projectile*> heroProjectiles;
 };
 
 #endif
