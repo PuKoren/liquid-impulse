@@ -1,0 +1,52 @@
+TARGET = liquid-impulse
+all: rm-elf $(TARGET).elf
+
+include $(KOS_BASE)/Makefile.rules
+
+CFLAGS = -O3 -fomit-frame-pointer
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++0x
+ASFLAGS = $(CFLAGS)
+KOS_LOCAL_CFLAGS = -I$(KOS_BASE)/addons/include/SDL -I$(KOS_BASE)/addons/include
+
+OBJS = main.o Application.o\
+		Tools/Surface.o \
+			Tools/Colors.o \
+			Tools/Settings.o \
+			Tools/DrawString.o \
+			Tools/BackgroundManager.o \
+		Scenes/Level.o \
+		Maths/Vector2.o \
+			Maths/Rectangle.o \
+		Interfaces/Menu.o \
+		Interfaces/GameOver.o \
+		Entities/Effects/Projectile.o \
+			Entities/Effects/ParticleEngine.o \
+			Entities/Effects/Particle.o \
+			Entities/Effects/Effect.o \
+			Entities/Characters/Hero.o \
+			Entities/Characters/Enemy.o \
+		Libraries/MinIni/minIni.o
+	
+clean:
+	-rm -f $(TARGET).elf $(OBJS)
+	-rm -f romdisk_boot.*
+
+dist:
+	-rm -f $(OBJS)
+	-rm -f romdisk_boot.*
+	$(KOS_STRIP) $(TARGET).elf
+	
+rm-elf:
+	-rm -f $(TARGET).elf
+	-rm -f romdisk_boot.*
+
+$(TARGET).elf: $(OBJS) 
+	$(KOS_CC) $(KOS_CFLAGS) $(KOS_LDFLAGS) -o $@ $(KOS_START) $^ -lSDL_mixer_126 -lSDL_image_124 \
+-lSDL_ttf -lSDL -lfreetype -lpng_128 -ljpeg -lz_123 -lm -lstdc++ $(KOS_LIBS)
+
+
+$(TARGET).bin: $(TARGET).elf
+	$(KOS_OBJCOPY) -R .stack -O binary $(TARGET).elf $(TARGET).bin
+
+run: $(TARGET).bin
+	$(KOS_LOADER) $(TARGET).bin
