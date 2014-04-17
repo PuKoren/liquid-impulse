@@ -18,8 +18,8 @@ Me too. But right now the game is still in the first stage of his life. But you 
 >cd build  
 >cmake ../.  
 >make  
->ln -s ../Resources Resources
->ln -s ../credits.txt credits.txt
+>ln -s ../Resources Resources  
+>ln -s ../credits.txt credits.txt  
 >./liquid-impulse
 
 ##### Using Visual Studio:  
@@ -35,8 +35,9 @@ No one did it yet. It should be as easy as the Linux build if you are using CMak
 >make  
 
 ##### Building for the Dreamcast:
->mv Makefile.dc Makefile
->make
+>mv Makefile.dc Makefile  
+>make  
+
 Please note that the Dreamcast version of the game is not ready yet and don't even launch on the DC emulator. (It compiles with KallistiOS but crash at launch, and we don't have any real DC to test). If you succeed, please let us know !
 
 ### What tools you used to make this game ?
