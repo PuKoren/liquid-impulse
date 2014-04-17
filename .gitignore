@@ -11,3 +11,12 @@
 *.lai
 *.la
 *.a
+
+# Visual Studio generated files
+*.sdf
+Debug/
+*.suo
+
+
+#Liquid Impulse generated files
+options.ini
