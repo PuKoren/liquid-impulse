@@ -5,7 +5,7 @@ EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_PIC1 = Resources_PSP/PICT0.png
 PSP_EBOOT_ICON = Resources_PSP/ICON0.png
 
-OBJS = src/main.o 
+OBJS = src/main.o \
 		src/Application.o\
 		src/Surface.o \
 		src/Colors.o \

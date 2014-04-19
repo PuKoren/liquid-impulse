@@ -8,7 +8,7 @@ CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++0x
 ASFLAGS = $(CFLAGS)
 KOS_LOCAL_CFLAGS = -I$(KOS_BASE)/addons/include/SDL -I$(KOS_BASE)/addons/include
 
-OBJS = src/main.o 
+OBJS = src/main.o \
 		src/Application.o\
 		src/Surface.o \
 		src/Colors.o \
