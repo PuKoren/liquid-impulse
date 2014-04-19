@@ -4,26 +4,28 @@ EXTRA_TARGETS = EBOOT.PBP
 
 PSP_EBOOT_PIC1 = Resources_PSP/PICT0.png
 PSP_EBOOT_ICON = Resources_PSP/ICON0.png
-OBJS = main.o Application.o\
-		Tools/Surface.o \
-			Tools/Colors.o \
-			Tools/Settings.o \
-			Tools/DrawString.o \
-			Tools/BackgroundManager.o \
-		Scenes/Level.o \
-		Maths/Vector2.o \
-			Maths/Rectangle.o \
-		Interfaces/Menu.o \
-		Interfaces/GameOver.o \
-		Entities/Effects/Projectile.o \
-			Entities/Effects/ParticleEngine.o \
-			Entities/Effects/Particle.o \
-			Entities/Effects/Effect.o \
-			Entities/Characters/Hero.o \
-			Entities/Characters/Enemy.o \
-		Libraries/MinIni/minIni.o
 
-CFLAGS = -O2 -G0 -Wall
+OBJS = src/main.o 
+		src/Application.o\
+		src/Surface.o \
+		src/Colors.o \
+		src/Settings.o \
+		src/DrawString.o \
+		src/BackgroundManager.o \
+		src/Level.o \
+		src/Vector2.o \
+		src/Rectangle.o \
+		src/Menu.o \
+		src/GameOver.o \
+		src/Projectile.o \
+		src/ParticleEngine.o \
+		src/Particle.o \
+		src/Effect.o \
+		src/Hero.o \
+		src/Enemy.o \
+		src/MinIni/minIni.o
+
+CFLAGS = -O2 -G0 -Wall -I$(CURDIR)/include/ -I$(CURDIR)/include/MinIni
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -std=c++0x
 ASFLAGS = $(CFLAGS)
 
