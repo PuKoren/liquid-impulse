@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{8d0cf487-a9ec-44a5-a05e-4af3d873af2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{86c49799-fd40-4585-b542-3ddbb28b01b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\minIni">
+      <UniqueIdentifier>{ae3175e6-1848-43f4-8033-a7e876962d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\MinIni">
+      <UniqueIdentifier>{f6bc0953-093c-46db-adc0-9b5b15649c3f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Application.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BackgroundManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Colors.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Config.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\DrawString.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Effect.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Enemy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GameOver.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Hero.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Level.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Menu.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Particle.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ParticleEngine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Projectile.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Rectangle.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Settings.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Surface.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Survival.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Vector2.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue-ccs.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue-efsl.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue-FatFs.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue-ffs.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue-mdd.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue-stdio.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minGlue.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\minIni.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\minIni\wxMinIni.h">
+      <Filter>Headers\minIni</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Application.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BackgroundManager.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Colors.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DrawString.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Effect.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Enemy.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameOver.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Hero.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Level.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Menu.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Particle.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ParticleEngine.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Projectile.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Rectangle.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Settings.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Surface.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Survival.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Vector2.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MinIni\minIni.c">
+      <Filter>Sources\MinIni</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

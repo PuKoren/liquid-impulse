@@ -16,6 +16,8 @@
 *.sdf
 Debug/
 *.suo
+bin/*.dll
+*.pdb
 
 
 #Liquid Impulse generated files
