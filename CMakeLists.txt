@@ -40,7 +40,7 @@ ${PROJECT_SOURCE_DIR}/include/MinIni
 )
 
 file(GLOB SRCS src/*.cpp)
-file(GLOB SRCSC src/*.c)
+file(GLOB MININI src/MinIni/*.c)
 file(GLOB HDRS include/*.h)
 
 link_libraries (
@@ -51,5 +51,5 @@ link_libraries (
    SDLmain
 )
 
-add_executable(${PROJECT_NAME} ${SRCS} ${HDRS} ${SRCSC})
+add_executable(${PROJECT_NAME} ${SRCS} ${HDRS} ${MININI})
 
