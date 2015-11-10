@@ -14,13 +14,11 @@ Me too. But right now the game is still in the first stage of his life. But you 
 
 ### I want to build it from the sources !
 ##### On Linux:
->mkdir build  
->cd build  
->cmake ../.  
->make  
->ln -s ../Resources Resources  
->ln -s ../credits.txt credits.txt  
->./liquid-impulse
+```sh
+cmake . 
+make
+./LiquidImpulse
+```
 
 ##### Using Visual Studio:  
 Open the .sln, and hit F5 ! Every SDL libs are bundled in the repository so there is nothing to configure.  
